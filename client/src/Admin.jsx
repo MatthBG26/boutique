@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:4000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 const STATUSES = ["nouvelle", "en préparation", "livrée", "annulée"];
 const format = (n) => n.toLocaleString("fr-FR") + " FCFA";
 
