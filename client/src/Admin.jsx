@@ -76,7 +76,7 @@ export default function Admin() {
     <div style={{ maxWidth: 900, margin: "0 auto", padding: 20 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h1>Commandes</h1>
-        <button onClick={logout}>Déconnexion</button>
+        <span><a href="/admin/products" style={{ marginRight: 12 }}>Produits</a><button onClick={logout}>Déconnexion</button></span>
       </div>
       {orders.length === 0 && <p>Aucune commande pour le moment.</p>}
       {orders.map((o) => (

@@ -54,6 +54,35 @@ module.exports = (prisma) => {
       res.status(404).json({ error: "Commande introuvable." });
     }
   });
+  const parseProduct = (b) => {
+    const name = String(b.name || "").trim();
+    const description = String(b.description || "").trim();
+    const price = Number(b.price);
+    const imageUrl = b.imageUrl ? String(b.imageUrl).trim() : null;
+    if (!name || !Number.isInteger(price) || price < 0) return null;
+    return { name, description, price, imageUrl };
+  };
 
+  router.get("/products", requireAdmin, async (req, res) => {
+    res.json(await prisma.product.findMany({ orderBy: { id: "asc" } }));
+  });
+
+  router.post("/products", requireAdmin, async (req, res) => {
+    const data = parseProduct(req.body || {});
+    if (!data) return res.status(400).json({ error: "Nom et prix valides obligatoires." });
+    res.status(201).json(await prisma.product.create({ data }));
+  });
+
+  router.put("/products/:id", requireAdmin, async (req, res) => {
+    const body = req.body || {};
+    const data = parseProduct(body);
+    if (!data) return res.status(400).json({ error: "Nom et prix valides obligatoires." });
+    if (typeof body.active === "boolean") data.active = body.active;
+    try {
+      res.json(await prisma.product.update({ where: { id: Number(req.params.id) }, data }));
+    } catch {
+      res.status(404).json({ error: "Produit introuvable." });
+    }
+  });
   return router;
 };

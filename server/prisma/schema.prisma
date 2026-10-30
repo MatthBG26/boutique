@@ -12,6 +12,8 @@ model Product {
   name        String
   description String
   price       Int
+  active      Boolean     @default(true)
+  imageUrl    String?
   orderItems  OrderItem[]
 }
 

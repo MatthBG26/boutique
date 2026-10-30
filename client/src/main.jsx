@@ -3,9 +3,17 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import Admin from "./Admin.jsx";
+import AdminProducts from "./AdminProducts.jsx";
 
-const isAdmin = window.location.pathname.startsWith("/admin");
+const path = window.location.pathname;
+const Page = path.startsWith("/admin/products")
+  ? AdminProducts
+  : path.startsWith("/admin")
+  ? Admin
+  : App;
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>{isAdmin ? <Admin /> : <App />}</StrictMode>
+  <StrictMode>
+    <Page />
+  </StrictMode>
 );

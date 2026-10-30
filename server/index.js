@@ -14,7 +14,7 @@ app.get("/api/health", (req, res) => {
 
 app.get("/api/products", async (req, res) => {
   try {
-    const products = await prisma.product.findMany({ orderBy: { id: "asc" } });
+    const products = await prisma.product.findMany({ where: { active: true }, orderBy: { id: "asc" } });
     res.json(products);
   } catch (err) {
     console.error(err);
@@ -34,7 +34,7 @@ app.post("/api/orders", async (req, res) => {
     }
 
     const ids = items.map((i) => Number(i.id));
-    const products = await prisma.product.findMany({ where: { id: { in: ids } } });
+    const products = await prisma.product.findMany({ where: { id: { in: ids }, active: true } });
 
     const lines = [];
     for (const item of items) {
